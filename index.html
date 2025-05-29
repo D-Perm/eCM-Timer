@@ -10,13 +10,13 @@
             text-align: center;
             background-color: #652E89;
             color: #ffc527;
-            overflow: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            transition: background-color 300ms ease-in;
         }
         #container{
             display: flex;
@@ -28,6 +28,9 @@
             font-size: 30vw;
             margin: 10px;
             font-family: 'Courier New', monospace;
+        }
+        #title{
+            margin: 20px 20px;
         }
         button{
             padding: 5px 20px;
@@ -50,8 +53,11 @@
             background-color: #a621ff;
             color: #ffc527;
         }
+        #start:active, #stop:active, #reset:active, #clear:active{
+            transform: scale(0.95);
+        }
         #containTimes{
-            border: 1px solid #ffc527;
+            border: 10px solid #ffc527;
             height: 200px;
             width: 60vw;
             overflow: auto;
@@ -64,7 +70,7 @@
 <body>
     <div id="container">
         <div>
-            <h1 id="title">eCybermission 5 Minute Timer (with one-minute warning)</h1>
+            <h1 id="title">eCybermission&reg; 5 Minute Timer (with one-minute warning)</h1>
             <h1 id="time">00:00</h1>
             <button id="start">Start</button>
             <button id="stop">Stop</button>
@@ -100,8 +106,12 @@
                         return;
                     }
                     if(timeSeconds === 239){
-                        const audio = new Audio("extraStuffNeeded/174830931297826776gxa6vl6a-voicemaker.in-speech.mp3");
+                        const audio = new Audio("174830931297826776gxa6vl6a-voicemaker.in-speech.mp3");
                         audio.play();
+                        document.body.style.backgroundColor = "red";
+                        setTimeout(() => {
+                            document.body.style.backgroundColor = "#652E89"
+                        }, 2000)
                     }
                     isRunning = true;
                     minutes = Number(minutes);
@@ -124,7 +134,7 @@
 
         resetBtn.addEventListener('click', (event) => {
             clearInterval(timer);
-            if(seconds !== 0){
+            if(timeSeconds !== 0){
                 times.push(`<p>${minutes}:${seconds}</p>`);
                 containTimes.innerHTML = times.join("");
             }
