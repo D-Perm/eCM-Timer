@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCM Timer</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            background-color: #652E89;
+            color: #ffc527;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        #container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #time{
+            font-size: 30vw;
+            margin: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        button{
+            padding: 5px 20px;
+            color: #652E89;
+            border: none;
+            border-radius: 5px;
+            font-size: 50px;
+            margin: 10px;
+        }
+        p, a{
+            font-weight: bold;
+            color: #ffc527;
+        }
+        #start, #stop, #reset, #clear{
+            background-color: #ffc527;
+            cursor: pointer;
+            transition: all 300ms ease;
+        }
+        #start:hover, #stop:hover, #reset:hover, #clear:hover{
+            background-color: #a621ff;
+            color: #ffc527;
+        }
+        #containTimes{
+            border: 1px solid #ffc527;
+            height: 200px;
+            width: 60vw;
+            overflow: auto;
+        }
+        p{
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div>
+            <h1 id="title">eCybermission 5 Minute Timer (with one-minute warning)</h1>
+            <h1 id="time">00:00</h1>
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+        <h2>Previous Times</h2>
+        <div id="containTimes">
+
+        </div>
+        <button id="clear">Clear</button>
+        <footer><p>Text to voice made using <a href="https://voicemaker.in/" target="_blank">Voicemaker&reg;</a></p></footer>
+    </div>
+    <script>
+        const timeDisplay = document.querySelector("#time");
+        const startBtn = document.querySelector("#start");
+        const stopBtn = document.querySelector("#stop");
+        const resetBtn = document.querySelector("#reset");
+        const clearTimes = document.querySelector("#clear");
+        const containTimes = document.querySelector("#containTimes")
+        let times = [];
+        let isRunning = false;
+        let timeSeconds = 0;
+        let minutes;
+        let seconds;
+        let timer;
+
+        startBtn.addEventListener('click', (event) => {
+            if(isRunning) return;
+                timer = setInterval(() => {
+                    if(timeSeconds === 300){
+                        clearInterval(timer);
+                        isRunning = false;
+                        return;
+                    }
+                    if(timeSeconds === 239){
+                        const audio = new Audio("extraStuffNeeded/174830931297826776gxa6vl6a-voicemaker.in-speech.mp3");
+                        audio.play();
+                    }
+                    isRunning = true;
+                    minutes = Number(minutes);
+                    seconds = Number(seconds);
+                    timeSeconds++;
+                    minutes = Math.floor(timeSeconds/60);
+                    seconds = timeSeconds % 60;
+
+                    minutes = String(minutes).padStart(2, "0");
+                    seconds = String(seconds).padStart(2, "0");
+
+                    timeDisplay.innerHTML = `${minutes}:${seconds}`;
+            }, 1000)
+        })
+
+        stopBtn.addEventListener('click', (event) => {
+            clearInterval(timer);
+            isRunning = false;
+        })
+
+        resetBtn.addEventListener('click', (event) => {
+            clearInterval(timer);
+            if(seconds !== 0){
+                times.push(`<p>${minutes}:${seconds}</p>`);
+                containTimes.innerHTML = times.join("");
+            }
+            isRunning = false;
+            timeSeconds = 0;
+            timeDisplay.innerHTML = "00:00"
+        })
+
+        clearTimes.addEventListener('click', (event) => {
+            times = [];
+            containTimes.innerHTML = "";
+        })
+    </script>
+</body>
+</html>
