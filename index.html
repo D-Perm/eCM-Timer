@@ -99,6 +99,8 @@
 
         startBtn.addEventListener('click', (event) => {
             if(isRunning) return;
+            isRunning = true;
+
                 timer = setInterval(() => {
                     if(timeSeconds === 300){
                         clearInterval(timer);
@@ -106,14 +108,14 @@
                         return;
                     }
                     if(timeSeconds === 239){
-                        const audio = new Audio("174830931297826776gxa6vl6a-voicemaker.in-speech.mp3");
+                        const audio = new Audio("extraStuffNeeded/174830931297826776gxa6vl6a-voicemaker.in-speech.mp3");
                         audio.play();
                         document.body.style.backgroundColor = "red";
                         setTimeout(() => {
                             document.body.style.backgroundColor = "#652E89"
                         }, 2000)
                     }
-                    isRunning = true;
+                    
                     minutes = Number(minutes);
                     seconds = Number(seconds);
                     timeSeconds++;
@@ -134,11 +136,11 @@
 
         resetBtn.addEventListener('click', (event) => {
             clearInterval(timer);
+            isRunning = false;
             if(timeSeconds !== 0){
                 times.push(`<p>${minutes}:${seconds}</p>`);
                 containTimes.innerHTML = times.join("");
             }
-            isRunning = false;
             timeSeconds = 0;
             timeDisplay.innerHTML = "00:00"
         })
